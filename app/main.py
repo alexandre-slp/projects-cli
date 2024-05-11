@@ -2,7 +2,7 @@ import asyncio
 
 import click
 
-from list_command import list_apps_command
+from app.commands.list_command import list_apps_command
 
 
 @click.command(context_settings={'help_option_names': ['-h', '--help']})
