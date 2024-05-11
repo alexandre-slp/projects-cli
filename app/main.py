@@ -5,7 +5,7 @@ import click
 from list_command import list_apps_command
 
 
-@click.command()
+@click.command(context_settings={'help_option_names': ['-h', '--help']})
 @click.option('-l', '--list', 'list_command', is_flag=True, default=False, help='List apps')
 def main(
         list_command: bool,
