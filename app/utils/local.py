@@ -62,5 +62,4 @@ async def get_app_instructions(path: Path) -> str:
             return json.loads(f.read())
 
     except Exception as exc:
-        # TODO: Handle error
-        pass
+        print(f'Failed to load instructions from {path.name}: {exc}')
