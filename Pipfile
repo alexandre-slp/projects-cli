@@ -9,6 +9,7 @@ texttable = "*"
 gitpython = "*"
 pygithub = "*"
 docker = "*"
+requests = "*"
 
 [dev-packages]
 
