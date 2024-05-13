@@ -39,20 +39,17 @@ async def get_organization_repos(org_name: str, org_apps: dict):
                 tg.create_task(get_repos_with_instructions(org_apps, repo))
 
     except Exception as exc:
-        # TODO: Handle error
-        pass
+        print(f'Error while getting {org_name} repos: {exc}')
 
 
 async def get_repos_with_instructions(repos: dict, repo: github.Repository):
+    app_name = repo.name.lower()
     try:
-        instructions = json.loads(repo.get_contents('.procli.json').decoded_content.decode())
-        app_name = repo.name.lower()
         repos[app_name] = {
             'installed': False,
             'running': False,
-            'instructions': instructions
+            'instructions': json.loads(repo.get_contents('.procli.json').decoded_content.decode())
         }
 
     except Exception as exc:
-        # TODO: Handle error
-        pass
+        print(f'Error while getting {app_name} instructions: {exc}')
