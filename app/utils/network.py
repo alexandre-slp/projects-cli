@@ -11,5 +11,5 @@ async def is_network_ok() -> bool:
 
         return False
     except Exception as exc:
-        print(exc)
+        print(f'Network error: {exc}')
         return False
