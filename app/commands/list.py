@@ -34,7 +34,10 @@ async def list_apps_command():
 
         tg.create_task(get_organization_apps_locally(apps_by_organization_locally))
 
-    merged_apps_by_organization = await merge_github_with_local_apps(apps_by_organization_locally, apps_by_organization_on_github)
+    merged_apps_by_organization = await merge_github_with_local_apps(
+        apps_by_organization_locally,
+        apps_by_organization_on_github
+    )
     await show_apps_by_organization(merged_apps_by_organization)
 
 
