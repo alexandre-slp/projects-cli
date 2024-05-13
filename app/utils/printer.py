@@ -99,7 +99,7 @@ async def format_app_status(apps: dict) -> list:
         for app in apps.keys():
             tg.create_task(add_icon_and_style(app, apps, apps_with_status))
 
-    apps_with_status.sort()
+    apps_with_status.sort(key=lambda x: x[1:])
     return apps_with_status
 
 
