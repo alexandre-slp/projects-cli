@@ -1,7 +1,7 @@
 import requests
 
 
-def is_network_ok() -> bool:
+async def is_network_ok() -> bool:
     url = "http://www.google.com"
     timeout = 1
     try:
