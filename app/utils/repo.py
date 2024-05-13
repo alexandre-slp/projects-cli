@@ -6,6 +6,8 @@ import re
 import github
 from github import Github, Auth
 
+from utils import global_options
+
 
 async def get_organization_apps_on_github(organizations: dict):
     pattern = re.compile(r'^GITHUB_(\w+)_TOKEN')
@@ -52,4 +54,5 @@ async def get_repos_with_instructions(repos: dict, repo: github.Repository):
         }
 
     except Exception as exc:
-        print(f'Error while getting {app_name} instructions: {exc}')
+        if global_options.LIST_APPS_WITHOUT_INSTRUCTIONS:
+            print(f'{app_name} does not have instructions: {exc}')
