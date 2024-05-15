@@ -1,9 +1,8 @@
 import asyncio
 
 from app.utils.local import get_organization_apps_locally
-from app.utils.printer import show_apps_by_organization
 from app.utils.network import is_network_ok
-
+from app.utils.printer import show_apps_by_organization
 from app.utils.repo import get_organization_apps_on_github
 
 
@@ -50,10 +49,9 @@ async def merge_github_with_local_apps(apps_by_organization_locally, apps_by_org
     return merged
 
 
-async def merge_org_apps(apps_by_organization_locally: dict, apps_by_organization_on_github: dict, merged: dict, org: str):
+async def merge_org_apps(apps_by_organization_locally: dict, apps_by_organization_on_github: dict, merged: dict,
+                         org: str):
     github_org_apps = apps_by_organization_on_github.get(org)
     local_org_apps = apps_by_organization_locally.get(org)
     if local_org_apps:
         merged[org] = {**github_org_apps, **local_org_apps}
-
-
