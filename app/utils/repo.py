@@ -37,10 +37,14 @@ async def get_organization_repos(org_name: str, org_apps: dict):
 
 async def get_repos_with_instructions(repos: dict, repo: github.Repository):
     app_name = repo.name.lower()
+    instructions = await get_app_instructions(app_name, repo)
+    if not instructions:
+        return
+
     repos[app_name] = {
         'installed': False,
         'running': False,
-        'instructions': await get_app_instructions(app_name, repo)
+        'instructions': instructions
     }
 
 
