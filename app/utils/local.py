@@ -7,7 +7,7 @@ import docker
 
 from utils import global_options
 
-INSTALLATION_FOLDER = Path(Path.home().joinpath('procli'))
+INSTALLATION_FOLDER = Path(Path.home().joinpath('procli').resolve())
 
 
 async def get_organization_apps_locally(organizations: dict, path=INSTALLATION_FOLDER):
@@ -20,7 +20,7 @@ async def get_organization_apps_locally(organizations: dict, path=INSTALLATION_F
 
 async def get_apps_from_org(org, organizations, path):
     async with asyncio.TaskGroup() as tg:
-        for app in path.joinpath(org).iterdir():
+        for app in path.joinpath(org).resolve().iterdir():
             tg.create_task(get_app_infos(app, org, organizations, path))
 
 
@@ -33,7 +33,7 @@ async def get_app_infos(app, org, organizations, path):
             app_name: {
                 'installed': True,
                 'running': await get_app_running_status(app_name),
-                'instructions': await get_app_instructions(path.joinpath(org).joinpath(app)),
+                'instructions': await get_app_instructions(path.joinpath(org).joinpath(app).resolve()),
             }
         }
 
