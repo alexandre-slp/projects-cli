@@ -1,5 +1,7 @@
 import requests
 
+from utils import global_options
+
 
 async def is_network_ok() -> bool:
     url = "http://www.google.com"
@@ -11,5 +13,6 @@ async def is_network_ok() -> bool:
 
         return False
     except Exception as exc:
-        print(f'Network error: {exc}')
+        if global_options.VERBOSE:
+            print(f'Network error: {exc}')
         return False

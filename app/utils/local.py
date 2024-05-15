@@ -4,6 +4,7 @@ from pathlib import Path
 
 import docker
 
+from utils import global_options
 
 INSTALLATION_FOLDER = Path(Path.home().joinpath('procli'))
 
@@ -52,7 +53,8 @@ async def get_app_running_status(app_name: str) -> bool:
 
         return False
     except Exception as exc:
-        # App not found on docker
+        if global_options.VERBOSE:
+            print(f'App not found on docker: {exc}')
         return False
 
 
@@ -62,4 +64,5 @@ async def get_app_instructions(path: Path) -> str:
             return json.loads(f.read())
 
     except Exception as exc:
-        print(f'Failed to load instructions from {path.name}: {exc}')
+        if global_options.VERBOSE:
+            print(f'Failed to load instructions from {path.name}: {exc}')
