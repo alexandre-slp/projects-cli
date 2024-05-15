@@ -1,6 +1,7 @@
 import asyncio
 import json
 
+import click
 import github
 from github import Github, Auth
 
@@ -13,7 +14,7 @@ async def get_organization_apps_on_github(organizations: dict):
         organizations[org] = dict()
 
     if not organizations:
-        print('No organizations found in environment.')
+        click.echo('No organizations found in environment.')
 
     async with asyncio.TaskGroup() as tg:
         for org in organizations:
@@ -31,7 +32,7 @@ async def get_organization_repos(org_name: str, org_apps: dict):
 
     except Exception as exc:
         if global_options.VERBOSE:
-            print(f'Error while getting {org_name} repos: {exc}')
+            click.echo(f'Error while getting {org_name} repos: {exc}')
 
 
 async def get_repos_with_instructions(repos: dict, repo: github.Repository):
@@ -52,4 +53,4 @@ async def get_app_instructions(app_name: str, repo: github.Repository):
 
     except Exception as exc:
         if global_options.LIST_APPS_WITHOUT_INSTRUCTIONS:
-            print(f'Missing instructions from {app_name}: {exc}')
+            click.echo(f'Missing instructions from {app_name}: {exc}')

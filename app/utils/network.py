@@ -1,3 +1,4 @@
+import click
 import requests
 
 from utils import global_options
@@ -14,5 +15,5 @@ async def is_network_ok() -> bool:
         return False
     except Exception as exc:
         if global_options.VERBOSE:
-            print(f'Network error: {exc}')
+            click.echo(f'Network error: {exc}')
         return False

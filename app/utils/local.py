@@ -2,6 +2,7 @@ import asyncio
 import json
 from pathlib import Path
 
+import click
 import docker
 
 from utils import global_options
@@ -54,7 +55,7 @@ async def get_app_running_status(app_name: str) -> bool:
         return False
     except Exception as exc:
         if global_options.VERBOSE:
-            print(f'App not found on docker: {exc}')
+            click.echo(f'App not found on docker: {exc}')
         return False
 
 
@@ -65,4 +66,4 @@ async def get_app_instructions(path: Path) -> str:
 
     except Exception as exc:
         if global_options.VERBOSE:
-            print(f'Failed to load instructions from {path.name}: {exc}')
+            click.echo(f'Failed to load instructions from {path.name}: {exc}')

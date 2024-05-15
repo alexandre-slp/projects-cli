@@ -1,6 +1,7 @@
 import asyncio
 import math
 
+import click
 import texttable
 
 
@@ -53,7 +54,7 @@ class Icons:
 
 async def show_apps_by_organization(merged_apps_by_organization: dict):
     if not merged_apps_by_organization:
-        print('No apps found.')
+        click.echo('No apps found.')
         return
 
     for org in merged_apps_by_organization:
@@ -66,9 +67,9 @@ async def show_apps_by_organization(merged_apps_by_organization: dict):
         header_division_char = f'{Style.bold}{Style.yellow}={Style.reset}'
         header_division_length = math.floor((max_width + num_cols / 2) * num_cols)
         header_position = math.floor(header_division_length / 2 - len(header_name) / 2)
-        print(f'{" " * header_position}{header_name}')
-        print(header_division_char * header_division_length)
-        print(table.draw())
+        click.echo(f'{" " * header_position}{header_name}')
+        click.echo(header_division_char * header_division_length)
+        click.echo(table.draw())
 
     await print_legend()
 
@@ -116,6 +117,6 @@ async def add_icon_and_style(app, apps, apps_with_status):
 
 
 async def print_legend():
-    print(f'{Icons.not_installed3} {Style.bold}-> uninstalled{Style.reset}')
-    print(f'{Icons.running3} {Style.bold}-> running{Style.reset}')
-    print(f'{Icons.stopped3} {Style.bold}-> stopped{Style.reset}')
+    click.echo(f'{Icons.not_installed3} {Style.bold}-> uninstalled{Style.reset}')
+    click.echo(f'{Icons.running3} {Style.bold}-> running{Style.reset}')
+    click.echo(f'{Icons.stopped3} {Style.bold}-> stopped{Style.reset}')
