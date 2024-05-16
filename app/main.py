@@ -4,6 +4,7 @@ import click
 
 from app.commands.list import list_apps_command
 from app.commands.start import start_app_command
+from app.commands.stop import stop_app_command
 from utils import global_options
 
 
@@ -37,6 +38,20 @@ def start(
 ):
     try:
         asyncio.run(start_app_command(app_name, org_name))
+    except Exception as exc:
+        click.echo(f'Error: {exc}')
+        exit(1)
+
+
+@cli.command(help='Stop the app.')
+@click.argument('app_name')
+@click.option('-o', '--org_name', help='Organization name.')
+def stop(
+        app_name: str,
+        org_name: str
+):
+    try:
+        asyncio.run(stop_app_command(app_name, org_name))
     except Exception as exc:
         click.echo(f'Error: {exc}')
         exit(1)
