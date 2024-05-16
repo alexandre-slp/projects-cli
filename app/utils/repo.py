@@ -51,9 +51,7 @@ async def get_apps_with_instructions(repos: dict, repo: github.Repository):
 
 async def get_app_instructions(app_name: str, repo: github.Repository):
     try:
-        instructions = json.loads(repo.get_contents('.procli.json').decoded_content.decode())
-        await local.check_instructions(instructions)
-        return instructions
+        return json.loads(repo.get_contents('.procli.json').decoded_content.decode())
 
     except Exception as exc:
         if global_options.VERBOSE:
