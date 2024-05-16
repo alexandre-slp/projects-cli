@@ -71,10 +71,14 @@ async def get_app_instructions(app_path: Path) -> dict:
     try:
         with open(app_path.joinpath('.procli.json').resolve()) as f:
             instructions = json.loads(f.read())
-        assert type(instructions['start']) is str
-        assert type(instructions['stop']) is str
+        await check_instructions(instructions)
         return instructions
 
     except Exception as exc:
         if global_options.VERBOSE:
             click.echo(f'Failed to load instructions from {app_path.name}: {exc}')
+
+
+async def check_instructions(instructions):
+    assert type(instructions['start']) is str
+    assert type(instructions['stop']) is str

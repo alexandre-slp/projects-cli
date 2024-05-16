@@ -7,6 +7,7 @@ from github import Github, Auth
 
 from env import get_organizations_from_env, get_org_token
 from utils import global_options
+from utils import local
 
 
 async def get_organization_apps_on_github(organizations: dict):
@@ -51,8 +52,7 @@ async def get_repos_with_instructions(repos: dict, repo: github.Repository):
 async def get_app_instructions(app_name: str, repo: github.Repository):
     try:
         instructions = json.loads(repo.get_contents('.procli.json').decoded_content.decode())
-        assert type(instructions['start']) is str
-        assert type(instructions['stop']) is str
+        await local.check_instructions(instructions)
         return instructions
 
     except Exception as exc:
