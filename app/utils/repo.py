@@ -19,24 +19,24 @@ async def get_organization_apps_on_github(organizations: dict):
 
     async with asyncio.TaskGroup() as tg:
         for org in organizations:
-            tg.create_task(get_organization_repos(org, organizations[org]))
+            tg.create_task(get_organization_apps(org, organizations[org]))
 
 
-async def get_organization_repos(org_name: str, org_apps: dict):
+async def get_organization_apps(org_name: str, org_apps: dict):
     try:
         token = await get_org_token(org_name)
         gh = Github(auth=Auth.Token(token))
         full_org_repos = gh.get_organization(org_name).get_repos()
         async with asyncio.TaskGroup() as tg:
             for repo in full_org_repos:
-                tg.create_task(get_repos_with_instructions(org_apps, repo))
+                tg.create_task(get_apps_with_instructions(org_apps, repo))
 
     except Exception as exc:
         if global_options.VERBOSE:
             click.echo(f'Error while getting {org_name} repos: {exc}')
 
 
-async def get_repos_with_instructions(repos: dict, repo: github.Repository):
+async def get_apps_with_instructions(repos: dict, repo: github.Repository):
     app_name = repo.name.lower()
     instructions = await get_app_instructions(app_name, repo)
     if not instructions and not global_options.LIST_APPS_WITHOUT_INSTRUCTIONS:
