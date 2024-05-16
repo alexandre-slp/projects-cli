@@ -24,8 +24,7 @@ def list_apps(
     try:
         asyncio.run(list_apps_command())
     except Exception as exc:
-        if global_options.VERBOSE:
-            click.echo(f'Error: {exc}')
+        click.echo(f'Error: {exc}')
         exit(1)
 
 
@@ -39,8 +38,7 @@ def start(
     try:
         asyncio.run(start_app_command(app_name, org_name))
     except Exception as exc:
-        if global_options.VERBOSE:
-            click.echo(f'Error: {exc}')
+        click.echo(f'Error: {exc}')
         exit(1)
 
 
