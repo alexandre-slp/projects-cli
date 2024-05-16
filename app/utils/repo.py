@@ -38,7 +38,7 @@ async def get_organization_repos(org_name: str, org_apps: dict):
 async def get_repos_with_instructions(repos: dict, repo: github.Repository):
     app_name = repo.name.lower()
     instructions = await get_app_instructions(app_name, repo)
-    if not instructions:
+    if not instructions and not global_options.LIST_APPS_WITHOUT_INSTRUCTIONS:
         return
 
     repos[app_name] = {
@@ -56,5 +56,5 @@ async def get_app_instructions(app_name: str, repo: github.Repository):
         return instructions
 
     except Exception as exc:
-        if global_options.LIST_APPS_WITHOUT_INSTRUCTIONS:
+        if global_options.VERBOSE:
             click.echo(f'Missing instructions from {app_name}: {exc}')

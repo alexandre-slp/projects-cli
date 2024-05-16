@@ -30,17 +30,20 @@ async def get_apps_from_org(org_path: Path, organizations: dict, path: Path):
 
 
 async def get_app_infos(app_path: Path, org_path: Path, organizations: dict, path: Path):
-    if app_path.is_dir():
-        # there are no duplicated orgs nor apps
-        org_name = org_path.name.lower()
-        app_name = app_path.name.lower()
-        organizations[org_name] = {
-            app_name: {
-                'installed': True,
-                'running': await get_app_running_status(app_name),
-                'instructions': await get_app_instructions(path.joinpath(org_path).joinpath(app_path).resolve()),
-            }
+    # there are no duplicated orgs nor apps
+    org_name = org_path.name.lower()
+    app_name = app_path.name.lower()
+    instructions = await get_app_instructions(path.joinpath(org_path).joinpath(app_path).resolve())
+    if not instructions:
+        return
+
+    organizations[org_name] = {
+        app_name: {
+            'installed': True,
+            'running': await get_app_running_status(app_name),
+            'instructions': instructions,
         }
+    }
 
 
 async def create_installation_folder(path: Path):
@@ -64,11 +67,14 @@ async def get_app_running_status(app_name: str) -> bool:
         return False
 
 
-async def get_app_instructions(path: Path) -> str:
+async def get_app_instructions(app_path: Path) -> dict:
     try:
-        with open(path.joinpath('.procli.json').resolve()) as f:
-            return json.loads(f.read())
+        with open(app_path.joinpath('.procli.json').resolve()) as f:
+            instructions = json.loads(f.read())
+        assert type(instructions['start']) is str
+        assert type(instructions['stop']) is str
+        return instructions
 
     except Exception as exc:
         if global_options.VERBOSE:
-            click.echo(f'Failed to load instructions from {path.name}: {exc}')
+            click.echo(f'Failed to load instructions from {app_path.name}: {exc}')
