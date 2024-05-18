@@ -6,6 +6,7 @@ from app.commands.list import list_apps_command
 from app.commands.start import start_app_command
 from app.commands.stop import stop_app_command
 from app.commands.install import install_app_command
+from app.commands.remove import remove_app_command
 from utils import global_options
 
 
@@ -69,6 +70,20 @@ def install(
 ):
     try:
         asyncio.run(install_app_command(app_name, org_name, is_http))
+    except Exception as exc:
+        click.echo(f'Error: {exc}')
+        exit(1)
+
+
+@cli.command(help='Remove the app.')
+@click.argument('app_name')
+@click.argument('org_name')
+def remove(
+        app_name: str,
+        org_name: str,
+):
+    try:
+        asyncio.run(remove_app_command(app_name, org_name))
     except Exception as exc:
         click.echo(f'Error: {exc}')
         exit(1)
