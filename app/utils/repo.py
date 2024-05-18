@@ -56,3 +56,13 @@ async def get_app_instructions(app_name: str, repo: github.Repository):
     except Exception as exc:
         if global_options.VERBOSE:
             click.echo(f'Missing instructions from {app_name}: {exc}')
+
+
+async def get_organization_app_url(app_name: str, org_name: str, is_http: bool) -> str:
+    token = await get_org_token(org_name)
+    gh = Github(auth=Auth.Token(token))
+    app_repo = gh.get_organization(org_name).get_repo(app_name)
+    if is_http:
+        return app_repo.clone_url
+
+    return app_repo.ssh_url
