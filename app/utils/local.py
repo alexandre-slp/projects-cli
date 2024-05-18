@@ -79,6 +79,15 @@ async def get_app_instructions(app_path: Path) -> dict:
             click.echo(f'Failed to load instructions from {app_path.name}: {exc}')
 
 
+async def is_app_installed(app_name: str, org_name: str) -> bool:
+    if org_name:
+        app_path = pathlib.Path(INSTALLATION_FOLDER, org_name, app_name).resolve()
+        if app_path.exists():
+            return True
+
+        return False
+
+
 async def get_app_path_interactively(app_name: str, org_name: str) -> pathlib.Path:
     if org_name:
         app_path = pathlib.Path(INSTALLATION_FOLDER, org_name, app_name).resolve()
