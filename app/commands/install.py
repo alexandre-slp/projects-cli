@@ -6,7 +6,7 @@ import local
 import repo
 
 
-async def install_app_command(app_name: str, org_name: str, is_http):
+async def install_app_command(app_name: str, org_name: str, is_http: bool):
     installation_path = local.INSTALLATION_FOLDER.joinpath(org_name).joinpath(app_name).resolve()
     if installation_path.exists():
         click.secho(f'App "{app_name}" already installed.', fg='yellow')
