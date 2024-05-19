@@ -59,7 +59,7 @@ def stop(
         exit(1)
 
 
-@cli.command(help='Install the app using ssh key.')
+@cli.command(help='Install the app (ssh key by default).')
 @click.argument('app_name')
 @click.argument('org_name')
 @click.option('-t', '--https', 'is_http', is_flag=True, help='Use https clone url.')
