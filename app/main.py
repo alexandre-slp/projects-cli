@@ -19,7 +19,7 @@ def cli(
 
 
 @cli.command(help='List apps.')
-@click.option('-a', '--show-all', is_flag=True, default=False, help='Show apps without instructions.')
+@click.option('-a', '--all', 'show_all', is_flag=True, default=False, help='Show apps without instructions.')
 def list(
         show_all: bool
 ):
@@ -33,7 +33,7 @@ def list(
 
 @cli.command(help='Start the app.')
 @click.argument('app_name')
-@click.option('-o', '--org_name', help='Organization name.')
+@click.option('-o', '--org', 'org_name', help='Organization name.')
 def start(
         app_name: str,
         org_name: str
@@ -47,7 +47,7 @@ def start(
 
 @cli.command(help='Stop the app.')
 @click.argument('app_name')
-@click.option('-o', '--org_name', help='Organization name.')
+@click.option('-o', '--org', 'org_name', help='Organization name.')
 def stop(
         app_name: str,
         org_name: str
@@ -62,14 +62,14 @@ def stop(
 @cli.command(help='Install the app (ssh key by default).')
 @click.argument('app_name')
 @click.argument('org_name')
-@click.option('-t', '--https', 'is_http', is_flag=True, help='Use https clone url.')
+@click.option('-t', '--https', 'is_https', is_flag=True, help='Use https clone url.')
 def install(
         app_name: str,
         org_name: str,
-        is_http: bool,
+        is_https: bool,
 ):
     try:
-        asyncio.run(install_app_command(app_name, org_name, is_http))
+        asyncio.run(install_app_command(app_name, org_name, is_https))
     except Exception as exc:
         click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
