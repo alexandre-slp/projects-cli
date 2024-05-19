@@ -14,3 +14,4 @@ async def install_app_command(app_name: str, org_name: str, is_http: bool):
 
     app_repo_url = await repo.get_organization_app_url(app_name, org_name, is_http)
     subprocess.run(f'git clone {app_repo_url} {installation_path}', shell=True, check=True)
+    click.secho(f'App "{app_name}" successfully installed.', fg='green')
