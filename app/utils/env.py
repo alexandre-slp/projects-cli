@@ -5,7 +5,7 @@ import re
 
 async def get_organizations_from_env() -> set:
     organizations = set()
-    pattern = re.compile(r'^GITHUB_(\w+)_TOKEN')
+    pattern = re.compile(r'^GITHUB_(\w+)_TOKEN$')
     env_keys = os.environ.keys()
     async with asyncio.TaskGroup() as tg:
         for key in env_keys:
@@ -17,7 +17,7 @@ async def get_organizations_from_env() -> set:
 async def get_organization_names(orgs: set, match_pattern: re.Pattern, env: str):
     match = re.fullmatch(match_pattern, env)
     if match and match.groups():
-        org_name = match.groups()[0].lower()
+        org_name = match.group(1).lower()
         orgs.add(org_name)
 
 
