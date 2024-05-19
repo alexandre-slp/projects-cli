@@ -15,5 +15,5 @@ async def is_network_ok() -> bool:
         return False
     except Exception as exc:
         if global_options.VERBOSE:
-            click.echo(f'Network error: {exc}')
+            click.secho(f'Network error: {exc}', fg='red', bold=True)
         return False

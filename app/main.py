@@ -27,7 +27,7 @@ def list(
     try:
         asyncio.run(list_apps_command())
     except Exception as exc:
-        click.echo(f'Error: {exc}')
+        click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
 
 
@@ -41,7 +41,7 @@ def start(
     try:
         asyncio.run(start_app_command(app_name, org_name))
     except Exception as exc:
-        click.echo(f'Error: {exc}')
+        click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
 
 
@@ -55,7 +55,7 @@ def stop(
     try:
         asyncio.run(stop_app_command(app_name, org_name))
     except Exception as exc:
-        click.echo(f'Error: {exc}')
+        click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
 
 
@@ -71,7 +71,7 @@ def install(
     try:
         asyncio.run(install_app_command(app_name, org_name, is_http))
     except Exception as exc:
-        click.echo(f'Error: {exc}')
+        click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
 
 
@@ -85,7 +85,7 @@ def remove(
     try:
         asyncio.run(remove_app_command(app_name, org_name))
     except Exception as exc:
-        click.echo(f'Error: {exc}')
+        click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
 
 

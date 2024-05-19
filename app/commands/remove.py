@@ -11,8 +11,10 @@ async def remove_app_command(app_name: str, org_name: str):
         click.secho(f'App "{app_name}" already removed.', fg='yellow')
         return
 
-    is_sure = click.confirm(f'By removing the "{app_name}" app all contents of ({installation_path}) will be removed.\n'
-                            f'Are you sure?')
+    confirm_text = click.style(f'By removing the "{app_name}" app '
+                               f'all contents of ({installation_path}) will be removed.\n'
+                               f'Are you sure?', bold=True)
+    is_sure = click.confirm(confirm_text)
     if not is_sure:
         click.secho(f'Operation aborted.', fg='yellow')
         return

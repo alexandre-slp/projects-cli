@@ -64,7 +64,7 @@ async def get_app_running_status(app_name: str) -> bool:
         return False
     except Exception as exc:
         if global_options.VERBOSE:
-            click.echo(f'App not found on docker: {exc}')
+            click.secho(f'App not found on docker: {exc}', fg='yellow', bold=True)
         return False
 
 
@@ -76,7 +76,7 @@ async def get_app_instructions(app_path: Path) -> dict:
 
     except Exception as exc:
         if global_options.VERBOSE:
-            click.echo(f'Failed to load instructions from {app_path.name}: {exc}')
+            click.secho(f'Failed to load instructions from {app_path.name}: {exc}', fg='red', bold=True)
 
 
 async def is_app_installed(app_name: str, org_name: str) -> bool:
@@ -111,10 +111,11 @@ async def get_app_path_interactively(app_name: str, org_name: str) -> pathlib.Pa
     if len(possible_orgs) == 1:
         return possible_orgs.pop().joinpath(app_name).resolve()
 
-    click.echo(f'The app "{app_name}" is present in more than one organization.')
-    click.echo(f'Which organization you want to use?')
+    click.secho(f'The app "{app_name}" is present in more than one organization.', bold=True)
+    click.secho(f'Which organization you want to use?\n', bold=True)
     for i, org in enumerate(organizations):
-        click.echo(f'{i + 1}) {org.name}')
+        click.secho(f'{i + 1}) {org.name}', bold=True)
 
-    choice = click.prompt('Choose organization number', type=int)
+    prompt_text = click.style('\nChoose organization number', bold=True)
+    choice = click.prompt(prompt_text, type=int)
     return possible_orgs[choice - 1].joinpath(app_name).resolve()

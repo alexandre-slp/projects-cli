@@ -15,7 +15,7 @@ async def get_organization_apps_on_github(organizations: dict):
         organizations[org] = dict()
 
     if not organizations:
-        click.echo('No organizations found in environment.')
+        click.secho('No organizations found in environment.', fg='yellow', bold=True)
 
     async with asyncio.TaskGroup() as tg:
         for org in organizations:
@@ -33,7 +33,7 @@ async def get_organization_apps(org_name: str, org_apps: dict):
 
     except Exception as exc:
         if global_options.VERBOSE:
-            click.echo(f'Error while getting {org_name} repos: {exc}')
+            click.secho(f'Error while getting {org_name} repos: {exc}', fg='red', bold=True)
 
 
 async def get_apps_with_instructions(repos: dict, repo: github.Repository):
@@ -55,7 +55,7 @@ async def get_app_instructions(app_name: str, repo: github.Repository):
 
     except Exception as exc:
         if global_options.VERBOSE:
-            click.echo(f'Missing instructions from {app_name}: {exc}')
+            click.secho(f'Missing instructions from {app_name}: {exc}', fg='yellow', bold=True)
 
 
 async def get_organization_app_url(app_name: str, org_name: str, is_http: bool) -> str:
