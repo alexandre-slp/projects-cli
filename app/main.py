@@ -2,12 +2,12 @@ import asyncio
 
 import click
 
+from app.commands.cd import cd_app_command
+from app.commands.install import install_app_command
 from app.commands.list import list_apps_command
+from app.commands.remove import remove_app_command
 from app.commands.start import start_app_command
 from app.commands.stop import stop_app_command
-from app.commands.install import install_app_command
-from app.commands.remove import remove_app_command
-from app.commands.cd import cd_app_command
 from app.commands.version import show_app_version_command
 from utils import global_options
 
@@ -15,19 +15,21 @@ from utils import global_options
 @click.group(context_settings={'help_option_names': ['-h', '--help']})
 @click.option('-v', '--verbose', is_flag=True, default=False, help='Show more messages.')
 def cli(
-        verbose: bool
+        verbose: bool,
 ):
     global_options.VERBOSE = verbose
 
 
 @cli.command(help='List apps.')
 @click.option('-a', '--all', 'show_all', is_flag=True, default=False, help='Show apps without instructions.')
+@click.option('-c', '--show-captions', is_flag=True, default=False, help='Show captions.')
 def list(
-        show_all: bool
+        show_all: bool,
+        show_captions: bool,
 ):
     global_options.LIST_APPS_WITHOUT_INSTRUCTIONS = show_all
     try:
-        asyncio.run(list_apps_command())
+        asyncio.run(list_apps_command(show_captions))
     except Exception as exc:
         click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
@@ -38,7 +40,7 @@ def list(
 @click.option('-o', '--org', 'org_name', help='Organization name.')
 def start(
         app_name: str,
-        org_name: str
+        org_name: str,
 ):
     try:
         asyncio.run(start_app_command(app_name, org_name))
@@ -52,7 +54,7 @@ def start(
 @click.option('-o', '--org', 'org_name', help='Organization name.')
 def stop(
         app_name: str,
-        org_name: str
+        org_name: str,
 ):
     try:
         asyncio.run(stop_app_command(app_name, org_name))
