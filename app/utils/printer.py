@@ -1,10 +1,16 @@
 import asyncio
+import itertools
 import math
 import os
 import re
+import threading
+import time
 
 import click
 import texttable
+
+STOP_EVENT = threading.Event()
+SPINNER_THREAD = threading.Thread()
 
 
 class Icons:
@@ -37,8 +43,6 @@ async def show_apps_by_organization(merged_apps_by_organization: dict):
         click.secho(org['header'], fg='blue', bold=True)
         click.secho(org['division'], fg='yellow', bold=True)
         click.echo(org['apps'].draw())
-
-    await print_legend()
 
 
 async def create_org_apps_table(merged_apps_by_organization: dict, org: str, organizations: [dict]):
@@ -121,3 +125,24 @@ async def print_legend():
     click.echo(f'{Icons.not_installed3} {click.style("-> uninstalled", bold=True)}')
     click.echo(f'{Icons.running3} {click.style("-> running", bold=True)}')
     click.echo(f'{Icons.stopped3} {click.style("-> stopped", bold=True)}')
+
+
+def spinner(stop_event):
+    spinner_cycle = itertools.cycle(['|', '/', '—', '\\'])
+    while not stop_event.is_set():
+        click.secho(next(spinner_cycle), fg='yellow', nl=False)
+        time.sleep(0.1)
+        click.echo('\b', nl=False)
+
+
+def start_spinner():
+    global STOP_EVENT, SPINNER_THREAD
+    STOP_EVENT = threading.Event()
+    SPINNER_THREAD = threading.Thread(target=spinner, args=(STOP_EVENT,))
+    SPINNER_THREAD.start()
+
+
+def stop_spinner():
+    global STOP_EVENT, SPINNER_THREAD
+    STOP_EVENT.set()
+    SPINNER_THREAD.join()
