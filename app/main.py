@@ -7,6 +7,7 @@ from app.commands.start import start_app_command
 from app.commands.stop import stop_app_command
 from app.commands.install import install_app_command
 from app.commands.remove import remove_app_command
+from app.commands.version import show_app_version_command
 from utils import global_options
 
 
@@ -84,6 +85,15 @@ def remove(
 ):
     try:
         asyncio.run(remove_app_command(app_name, org_name))
+    except Exception as exc:
+        click.secho(f'Error: {exc}', fg='red', bold=True)
+        exit(1)
+
+
+@cli.command(help='Show app version.')
+def version():
+    try:
+        asyncio.run(show_app_version_command())
     except Exception as exc:
         click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
