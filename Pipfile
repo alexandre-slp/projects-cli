@@ -10,6 +10,7 @@ gitpython = "*"
 pygithub = "*"
 docker = "*"
 requests = "*"
+pyinstaller = "*"
 
 [dev-packages]
 
