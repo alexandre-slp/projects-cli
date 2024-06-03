@@ -20,6 +20,36 @@ def cli(
     global_options.VERBOSE = verbose
 
 
+@cli.command(help="Change to app's directory.")
+@click.argument('app_name')
+@click.option('-o', '--org', 'org_name', help='Organization name.')
+def cd(
+        app_name: str,
+        org_name: str,
+):
+    try:
+        asyncio.run(cd_app_command(app_name, org_name))
+    except Exception as exc:
+        click.secho(f'Error: {exc}', fg='red', bold=True)
+        exit(1)
+
+
+@cli.command(help='Install the app (ssh key by default).')
+@click.argument('app_name')
+@click.argument('org_name')
+@click.option('-t', '--https', 'is_https', is_flag=True, help='Use https clone url.')
+def install(
+        app_name: str,
+        org_name: str,
+        is_https: bool,
+):
+    try:
+        asyncio.run(install_app_command(app_name, org_name, is_https))
+    except Exception as exc:
+        click.secho(f'Error: {exc}', fg='red', bold=True)
+        exit(1)
+
+
 @cli.command(help='List apps.')
 @click.option('-a', '--all', 'show_all', is_flag=True, default=False, help='Show apps without instructions.')
 @click.option('-c', '--show-captions', is_flag=True, default=False, help='Show captions.')
@@ -30,6 +60,20 @@ def list(
     global_options.LIST_APPS_WITHOUT_INSTRUCTIONS = show_all
     try:
         asyncio.run(list_apps_command(show_captions))
+    except Exception as exc:
+        click.secho(f'Error: {exc}', fg='red', bold=True)
+        exit(1)
+
+
+@cli.command(help='Remove the app.')
+@click.argument('app_name')
+@click.argument('org_name')
+def remove(
+        app_name: str,
+        org_name: str,
+):
+    try:
+        asyncio.run(remove_app_command(app_name, org_name))
     except Exception as exc:
         click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
@@ -58,50 +102,6 @@ def stop(
 ):
     try:
         asyncio.run(stop_app_command(app_name, org_name))
-    except Exception as exc:
-        click.secho(f'Error: {exc}', fg='red', bold=True)
-        exit(1)
-
-
-@cli.command(help='Install the app (ssh key by default).')
-@click.argument('app_name')
-@click.argument('org_name')
-@click.option('-t', '--https', 'is_https', is_flag=True, help='Use https clone url.')
-def install(
-        app_name: str,
-        org_name: str,
-        is_https: bool,
-):
-    try:
-        asyncio.run(install_app_command(app_name, org_name, is_https))
-    except Exception as exc:
-        click.secho(f'Error: {exc}', fg='red', bold=True)
-        exit(1)
-
-
-@cli.command(help='Remove the app.')
-@click.argument('app_name')
-@click.argument('org_name')
-def remove(
-        app_name: str,
-        org_name: str,
-):
-    try:
-        asyncio.run(remove_app_command(app_name, org_name))
-    except Exception as exc:
-        click.secho(f'Error: {exc}', fg='red', bold=True)
-        exit(1)
-
-
-@cli.command(help="Change to app's directory.")
-@click.argument('app_name')
-@click.option('-o', '--org', 'org_name', help='Organization name.')
-def cd(
-        app_name: str,
-        org_name: str,
-):
-    try:
-        asyncio.run(cd_app_command(app_name, org_name))
     except Exception as exc:
         click.secho(f'Error: {exc}', fg='red', bold=True)
         exit(1)
