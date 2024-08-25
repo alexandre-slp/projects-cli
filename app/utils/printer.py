@@ -74,7 +74,12 @@ async def format_matrix(apps: dict) -> (list, int, int, int):
 
     max_col_width = max(app_names_width)
     max_col_visible_width = max(app_names_visible_width)
-    size = os.get_terminal_size()
+    try:
+        size = os.get_terminal_size()
+    except OSError:
+        # use default terminal size value
+        size = os.terminal_size((80, 24))
+
     max_num_cols = size.columns // max_col_width
     app_quantity = len(apps_with_status)
     num_cols = app_quantity if app_quantity <= max_num_cols else max_num_cols
