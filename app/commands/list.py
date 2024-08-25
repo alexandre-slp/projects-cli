@@ -35,7 +35,7 @@ async def list_apps_command(show_captions: bool):
 
             tg.create_task(get_organization_apps_locally(apps_by_organization_locally))
 
-        merged_apps_by_organization = await merge_github_with_local_apps(
+        merged_apps_by_organization = await merge_github_and_local_apps(
             apps_by_organization_locally,
             apps_by_organization_on_github
         )
@@ -49,18 +49,9 @@ async def list_apps_command(show_captions: bool):
         raise exc
 
 
-async def merge_github_with_local_apps(apps_by_organization_locally, apps_by_organization_on_github):
-    merged = apps_by_organization_on_github.copy()
-    async with asyncio.TaskGroup() as tg:
-        for org in merged:
-            tg.create_task(merge_org_apps(apps_by_organization_locally, apps_by_organization_on_github, merged, org))
+async def merge_github_and_local_apps(apps_by_organization_locally, apps_by_organization_on_github):
+    merged = apps_by_organization_on_github | apps_by_organization_locally
+    for org in merged:
+        merged[org] = apps_by_organization_on_github.get(org, {}) | apps_by_organization_locally.get(org, {})
 
     return merged
-
-
-async def merge_org_apps(apps_by_organization_locally: dict, apps_by_organization_on_github: dict, merged: dict,
-                         org: str):
-    github_org_apps = apps_by_organization_on_github.get(org)
-    local_org_apps = apps_by_organization_locally.get(org)
-    if local_org_apps:
-        merged[org] = {**github_org_apps, **local_org_apps}
