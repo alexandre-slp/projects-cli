@@ -1,6 +1,6 @@
 import subprocess
 
-from local import get_app_path_interactively
+from app.utils.local import get_app_path_interactively
 
 
 async def cd_app_command(app_name: str, org_name: str):

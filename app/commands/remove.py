@@ -2,7 +2,7 @@ import subprocess
 
 import click
 
-import local
+import app.utils.local as local
 
 
 async def remove_app_command(app_name: str, org_name: str):

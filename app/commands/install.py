@@ -2,8 +2,8 @@ import subprocess
 
 import click
 
-import local
-import repo
+import app.utils.local as local
+import app.utils.repo as repo
 
 
 async def install_app_command(app_name: str, org_name: str, is_http: bool):

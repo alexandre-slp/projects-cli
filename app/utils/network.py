@@ -1,7 +1,7 @@
 import click
 import requests
 
-from utils import global_options
+from app.utils import global_options
 
 
 async def is_network_ok() -> bool:

@@ -2,7 +2,7 @@ import subprocess
 
 import click
 
-from local import get_app_instructions, get_app_path_interactively
+from app.utils.local import get_app_instructions, get_app_path_interactively
 
 
 async def stop_app_command(app_name: str, org_name: str):

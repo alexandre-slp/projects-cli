@@ -6,7 +6,7 @@ from pathlib import Path
 import click
 import docker
 
-from utils import global_options
+from app.utils import global_options
 
 INSTALLATION_FOLDER = Path(Path.home().joinpath('procli').resolve())
 

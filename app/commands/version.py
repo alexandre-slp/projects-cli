@@ -1,6 +1,6 @@
 import click
 
-from __version__ import __version__
+from app.__version__ import __version__
 
 
 async def show_app_version_command():

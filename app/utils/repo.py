@@ -5,9 +5,8 @@ import click
 import github
 from github import Github, Auth
 
-from env import get_organizations_from_env, get_org_token
-from utils import global_options
-from utils import local
+from app.utils.env import get_organizations_from_env, get_org_token
+from app.utils import global_options
 
 
 async def get_organization_apps_on_github(organizations: dict):
