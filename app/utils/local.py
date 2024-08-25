@@ -12,22 +12,31 @@ INSTALLATION_FOLDER = Path(Path.home().joinpath('procli').resolve())
 
 
 async def get_organization_apps_locally(organizations: dict, path=INSTALLATION_FOLDER):
-    orgs = await get_organizations(path)
+    orgs = await get_organizations()
     async with asyncio.TaskGroup() as tg:
         for org in orgs:
-            tg.create_task(get_apps_from_org(org, organizations, path))
+            tg.create_task(get_apps_infos_from_org(org, organizations, path))
 
 
-async def get_organizations(path: Path) -> list[Path]:
+async def get_organizations(path=INSTALLATION_FOLDER) -> list[Path]:
     await create_installation_folder(path)
     orgs = [org for org in path.iterdir() if org.is_dir()]
     return orgs
 
 
-async def get_apps_from_org(org_path: Path, organizations: dict, path: Path):
+async def get_apps_infos_from_org(org_path: Path, organizations: dict, path: Path):
     async with asyncio.TaskGroup() as tg:
         for app in path.joinpath(org_path).resolve().iterdir():
             tg.create_task(get_app_infos(app, org_path, organizations, path))
+
+
+async def get_apps_from_org(org_path: Path) -> list[Path]:
+    apps = []
+    for app in org_path.resolve().iterdir():
+        if app.is_dir():
+            apps.append(app)
+
+    return apps
 
 
 async def get_app_infos(app_path: Path, org_path: Path, organizations: dict, path: Path):
@@ -38,12 +47,13 @@ async def get_app_infos(app_path: Path, org_path: Path, organizations: dict, pat
     if not instructions:
         return
 
-    organizations[org_name] = {
-        app_name: {
-            'installed': True,
-            'running': await get_app_running_status(app_name),
-            'instructions': instructions,
-        }
+    if not organizations.get(org_name):
+        organizations[org_name] = {}
+
+    organizations[org_name][app_name] = {
+        'installed': True,
+        'running': await get_app_running_status(app_name),
+        'instructions': instructions,
     }
 
 
@@ -96,7 +106,7 @@ async def get_app_path_interactively(app_name: str, org_name: str) -> pathlib.Pa
 
         return app_path
 
-    organizations = await get_organizations(INSTALLATION_FOLDER)
+    organizations = await get_organizations()
     if not organizations:
         raise click.exceptions.UsageError(f'Install the app "{app_name}" first.')
 
