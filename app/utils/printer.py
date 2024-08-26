@@ -48,12 +48,13 @@ async def show_apps_by_organization(merged_apps_by_organization: dict):
 async def create_org_apps_table(merged_apps_by_organization: dict, org: str, organizations: [dict]):
     formatted_matrix, max_cols_width, max_visible_width, num_cols = await format_matrix(
         merged_apps_by_organization[org])
+    min_header_length = 15
     table = texttable.Texttable()
     table.set_chars(['', '', '', ''])
     table.set_cols_width([max_cols_width] * num_cols)
     table.add_rows(formatted_matrix, header=False)
     header_name = org.capitalize()
-    header_division_length = math.floor((max_visible_width + num_cols / 2) * num_cols)
+    header_division_length = max(min_header_length, math.floor((max_visible_width + num_cols / 2) * num_cols))
     header_position = math.floor(header_division_length / 2 - len(header_name) / 2)
     organizations.append({
         'header': f'{" " * header_position}{header_name}',
