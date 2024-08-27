@@ -15,17 +15,9 @@ SPINNER_THREAD = threading.Thread()
 
 class Icons:
     # unicode characters: https://www.tamasoft.co.jp/en/general-info/unicode.html
-    not_installed = click.style('☐')
-    not_installed2 = click.style('⊘')
-    not_installed3 = click.style('ﰮ')
-
-    running = click.style('☑', fg='green')
-    running2 = click.style('✔', fg='green')
-    running3 = click.style('ﲏ', fg='green')
-
-    stopped = click.style('☒', fg='red')
-    stopped2 = click.style('✖', fg='red')
-    stopped3 = click.style('ﱥ', fg='red')
+    not_installed = click.style(text='ﰮ')
+    running =       click.style(text='ﲏ', fg='green')
+    stopped =       click.style(text='ﱥ', fg='red')
 
 
 async def show_apps_by_organization(merged_apps_by_organization: dict):
@@ -117,20 +109,20 @@ async def format_app_status(apps: dict, word_patter: re.Pattern) -> list:
 
 
 async def add_icon_and_style(app, apps, apps_with_status):
-    formatted_app = f'{Icons.not_installed3} {click.style(app, bold=True)}'
+    formatted_app = f'{Icons.not_installed} {click.style(app, bold=True)}'
     if apps.get(app).get('running'):
-        formatted_app = f'{Icons.running3} {click.style(app, bold=True)}'
+        formatted_app = f'{Icons.running} {click.style(app, bold=True)}'
 
     elif apps.get(app).get('installed'):
-        formatted_app = f'{Icons.stopped3} {click.style(app, bold=True)}'
+        formatted_app = f'{Icons.stopped} {click.style(app, bold=True)}'
 
     apps_with_status.append(formatted_app)
 
 
 async def print_legend():
-    click.echo(f'{Icons.not_installed3} {click.style("-> uninstalled", bold=True)}')
-    click.echo(f'{Icons.running3} {click.style("-> running", bold=True)}')
-    click.echo(f'{Icons.stopped3} {click.style("-> stopped", bold=True)}')
+    click.echo(f'{Icons.not_installed} {click.style("-> uninstalled", bold=True)}')
+    click.echo(f'{Icons.running} {click.style("-> running", bold=True)}')
+    click.echo(f'{Icons.stopped} {click.style("-> stopped", bold=True)}')
 
 
 def spinner(stop_event):
