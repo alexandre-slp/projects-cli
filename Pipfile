@@ -8,9 +8,9 @@ click = "*"
 texttable = "*"
 gitpython = "*"
 pygithub = "*"
-docker = "*"
-requests = "*"
 pyinstaller = "*"
+requests = "*"
+docker = "*"
 
 [dev-packages]
 
