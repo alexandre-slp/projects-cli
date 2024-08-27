@@ -16,9 +16,9 @@
 | **help**    |    Show available commands.     |
 | **install** |    Clone app from git repo.     |
 | **list**    | List available apps and status. |
-| **remove**  |           remove app            |
-| **start**   |            start app            |
-| **stop**    |            stop app             |
+| **remove**  |           Remove app            |
+| **start**   |            Start app            |
+| **stop**    |            Stop app             |
 
 ## Setup
 
